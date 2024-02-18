@@ -62,35 +62,58 @@ const SignUpForm = () => {
       <form onSubmit={handleSubmit}>
         <FormInput
           label="Display Name"
-          type="text"
-          onChange={handleChange}
-          name="displayName"
-          value={displayName}
-          required
+          inputOptions={{
+            type: "text",
+            onChange: handleChange,
+            name: "displayName",
+            value: displayName,
+            required: true,
+          }}
         />
         <FormInput
           label="Email"
-          type="email"
-          onChange={handleChange}
-          name="email"
-          value={email}
-          required
+          inputOptions={{
+            type: "email",
+            onChange: handleChange,
+            name: "email",
+            value: email,
+            required: true,
+          }}
+          // type="email"
+          // onChange={handleChange}
+          // name="email"
+          // value={email}
+          // required
         />
         <FormInput
           label="Password"
-          type="password"
-          onChange={handleChange}
-          name="password"
-          value={password}
-          required
+          inputOptions={{
+            type: "password",
+            onChange: handleChange,
+            name: "password",
+            value: password,
+            required: true,
+          }}
+          // type="password"
+          // onChange={handleChange}
+          // name="password"
+          // value={password}
+          // required
         />
         <FormInput
           label="Confirm Password"
-          type="password"
-          onChange={handleChange}
-          name="confirmPassword"
-          value={confirmPassword}
-          required
+          inputOptions={{
+            type: "password",
+            onChange: handleChange,
+            name: "confirmPassword",
+            value: confirmPassword,
+            required: true,
+          }}
+          // type="password"
+          // onChange={handleChange}
+          // name="confirmPassword"
+          // value={confirmPassword}
+          // required
         />
         <button type="submit">Sign Up</button>
       </form>
