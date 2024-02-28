@@ -1,7 +1,7 @@
 import { useState } from "react";
 import FormInput from "../form-input/form-input.component";
 import {
-  createAuthUserWithEmailAndPassword,
+  handleSignInWithGoogle,
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
 import "./sign-in-form.styles.scss";
@@ -18,10 +18,20 @@ const SignInForm = () => {
     setFormFields(defaultFormFields);
   };
 
+  const handleSignInWithGoogle = async () => {
+    const { user } = await signInWithGooglePopup();
+    await createUserDocumentFromAuth(user);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
+      const response = await signInAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+      console.log(response);
       resetFormFields();
     } catch (error) {}
   };
@@ -76,7 +86,12 @@ const SignInForm = () => {
           // value={password}
           // required
         />
-        <button type="submit">Sign In</button>
+        <div className="buttons-container">
+          <button type="submit">Sign In</button>
+          <button buttontype="google" onClick={handleSignInWithGoogle}>
+            Google Sign In
+          </button>
+        </div>
       </form>
     </div>
   );
