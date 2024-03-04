@@ -1,14 +1,13 @@
 import { createContext, useState, useEffect } from "react";
 
 import {
-  createUserDocumentFromAuth,
   onAuthStateChangedListener,
+  createUserDocumentFromAuth,
 } from "../utils/firebase/firebase.utils";
 
-// This is the actual value I want to access in my components
 export const UserContext = createContext({
-  currentUser: null,
   setCurrentUser: () => null,
+  currentUser: null,
 });
 
 export const UserProvider = ({ children }) => {
@@ -22,6 +21,7 @@ export const UserProvider = ({ children }) => {
       }
       setCurrentUser(user);
     });
+
     return unsubscribe;
   }, []);
 
