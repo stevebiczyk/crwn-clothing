@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
-import PRODUCTS from "../shop-data.json"; // Path to your products JSON file
+import { createContext, useEffect, useState } from "react";
+import { addCollectionAndDocuments } from "../utils/firebase/firebase.utils.js";
+// import SHOP_DATA from "../shop-data.js"; // Importing the shop data
 
 export const ProductsContext = createContext({
   products: [],
@@ -7,14 +8,11 @@ export const ProductsContext = createContext({
 });
 
 export const ProductsProvider = ({ children }) => {
-  const [products, setProducts] = useState(PRODUCTS);
+  const [products, setProducts] = useState([]);
+  // useEffect(() => {
+  //   addCollectionAndDocuments("categories", SHOP_DATA);
+  // }, []);
   const value = { products };
-
-  //   useEffect(() => {
-  //     // Simulating fetching data
-  //     // In a real app, you might fetch this data from a server
-  //     setProducts(PRODUCTS);
-  //   }, []);
 
   return (
     <ProductsContext.Provider value={value}>
