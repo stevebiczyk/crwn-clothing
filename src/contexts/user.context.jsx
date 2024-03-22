@@ -17,6 +17,8 @@ export const USER_ACTION_TYPES = {
   SIGN_OUT: "SIGN_OUT",
 };
 
+const INITIAL_STATE = { currentUser: null };
+
 const userReducer = (state, action) => {
   console.log("dispatched action:");
   console.log(action);
@@ -31,8 +33,6 @@ const userReducer = (state, action) => {
       throw new Error(`Unsupported action type: ${type} in userReducer`);
   }
 };
-
-const INITIAL_STATE = { currentUser: null };
 
 export const UserProvider = ({ children }) => {
   const [{ currentUser }, dispatch] = useReducer(userReducer, INITIAL_STATE);
