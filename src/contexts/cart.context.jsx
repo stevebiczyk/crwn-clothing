@@ -1,9 +1,6 @@
-import { createContext, useState, useReducer } from "react";
+import { createContext, useReducer } from "react";
 
-// const CartActionTypes = {
-//   SET_CART_ITEMS: "SET_CART_ITEMS",
-//   SET_IS_CART_OPEN: "SET_IS_CART_OPEN",
-// };
+import { createAction } from "../utils/reducer/reducer.utils";
 
 const addCartItem = (cartItems, productToAdd) => {
   const existingCartItem = cartItems.find(
@@ -39,10 +36,8 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
 };
 
 const CART_ACTION_TYPES = {
-  SET_IS_CART_OPEN: "SET_IS_CART_OPEN",
   SET_CART_ITEMS: "SET_CART_ITEMS",
-  SET_CART_COUNT: "SET_CART_COUNT",
-  SET_CART_TOTAL: "SET_CART_TOTAL",
+  SET_IS_CART_OPEN: "SET_IS_CART_OPEN",
 };
 
 const INITIAL_STATE = {
@@ -56,8 +51,10 @@ const cartReducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case SET_CART_ITEMS:
+    case CART_ACTION_TYPES.SET_CART_ITEMS:
       return { ...state, ...payload };
+    case CART_ACTION_TYPES.SET_IS_CART_OPEN:
+      return { ...state, isCartOpen: payload };
     default:
       throw new Error(`Unsupported action type: ${type} in cartReducer`);
   }
@@ -82,18 +79,18 @@ export const CartProvider = ({ children }) => {
     useReducer(cartReducer, INITIAL_STATE);
 
   const updateCartItemsReducer = (newCartItems) => {
-    const newCartItemCount = cartItems.reduce(
+    const newCartItemCount = newCartItems.reduce(
       (total, cartItem) => total + cartItem.quantity,
       0
     );
 
-    const newCartTotal = cartItems.reduce(
+    const newCartTotal = newCartItems.reduce(
       (total, cartItem) => total + cartItem.quantity * cartItem.price,
       0
     );
 
     const payload = {
-      cartItems,
+      cartItems: newCartItems,
       cartItemCount: newCartItemCount,
       cartTotal: newCartTotal,
     };
@@ -116,9 +113,13 @@ export const CartProvider = ({ children }) => {
     updateCartItemsReducer(newCartItems);
   };
 
+  const setIsCartOpen = (bool) => {
+    dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool));
+  };
+
   const value = {
     isCartOpen,
-    setIsCartOpen: () => {},
+    setIsCartOpen,
     addItemToCart,
     removeItemFromCart,
     clearItemFromCart,
