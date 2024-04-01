@@ -9,6 +9,7 @@ import { CategoryContainer, CategoryTitle } from "./category.styles.jsx";
 
 const Category = () => {
   const { category } = useParams();
+  console.log("Category component execution", category, categoriesMap);
   console.log("render/re-render Category component");
   const categoriesMap = useSelector(selectCategoriesMap);
   const [products, setProducts] = useState(categoriesMap[category]);
