@@ -1,8 +1,8 @@
 import { compose, createStore, applyMiddleware } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-
 import logger from "redux-logger";
+import thunk from "redux-thunk";
 
 import { rootReducer } from "./root-reducer";
 
@@ -14,9 +14,18 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const middleWares = [process.env.NODE_ENV !== "production" && logger].filter(
-  Boolean
-); // filter out falsey values
+const middleWares = [
+  process.env.NODE_ENV !== "production" && logger,
+  thunk,
+].filter(Boolean); // filter out falsey values
+
+const thunkMiddleware = (store) => (next) => (action) => {
+  if (typeof action === "function") {
+    action(dispatch);
+  }
+
+  return next(action);
+};
 
 const composeEnhancer =
   (process.env.NODE_ENV !== "production" &&
