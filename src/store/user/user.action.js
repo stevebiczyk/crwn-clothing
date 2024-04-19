@@ -32,11 +32,14 @@ export const signUpStart = (email, password, displayName) =>
     displayName,
   });
 
-export const signUpSuccess = (user, additionalDetails) =>
-  createAction(USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user, additionalDetails });
+export const signUpSuccess = (user, additionalInformation) =>
+  createAction(USER_ACTION_TYPES.SIGN_UP_SUCCESS, {
+    user,
+    additionalInformation,
+  });
 
-export const signUpFailed = (error) =>
-  createAction(USER_ACTION_TYPES.SIGN_UP_FAILED, error);
+export const signUpFailure = (error) =>
+  createAction(USER_ACTION_TYPES.SIGN_UP_FAILURE, error);
 
 export const signOutStart = () =>
   createAction(USER_ACTION_TYPES.SIGN_OUT_START);
