@@ -7,7 +7,7 @@ import { FormContainer, PaymentFormContainer } from "./payment-form.styles";
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const PaymentHandler = async (event) => {
+  const paymentHandler = async (event) => {
     event.preventDefault();
     if (!stripe || !elements) {
       return;
