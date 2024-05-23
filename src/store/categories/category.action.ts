@@ -23,8 +23,8 @@ export type CategoryAction =
   | FetchCategoriesSuccess
   | FetchCategoriesFailure;
 
-export const setCategories = (categoriesArray) =>
-  createAction(CATEGORIES_ACTION_TYPES.SET_CATEGORIES, categoriesArray);
+// export const setCategories = (categoriesArray) =>
+//   createAction(CATEGORIES_ACTION_TYPES.SET_CATEGORIES, categoriesArray);
 
 export const fetchCategoriesStart = (): FetchCategoriesStart =>
   createAction(CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START);
