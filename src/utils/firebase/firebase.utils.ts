@@ -63,9 +63,9 @@ export type ObjectToAdd = {
   title: string;
 };
 
-export const addCollectionAndDocuments = async <T extends ObjectToAdd> (
+export const addCollectionAndDocuments = async <T extends ObjectToAdd>(
   collectionKey: string,
-  objectsToAdd; T[],
+  objectsToAdd: T[]
 ): Promise<void> => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
@@ -84,7 +84,9 @@ export const getCategoriesAndDocuments = async (): Promise<Category[]> => {
   const q = query(collectionRef);
 
   const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data() as Category);
+  return querySnapshot.docs.map(
+    (docSnapshot) => docSnapshot.data() as Category
+  );
 };
 
 export type AdditionalInformation = {
@@ -126,13 +128,19 @@ export const createUserDocumentFromAuth = async (
   return userSnapshot as QueryDocumentSnapshot<UserData>;
 };
 
-export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
+export const createAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
 
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const signInAuthUserWithEmailAndPassword = async (email: string, password: string) => {
+export const signInAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
 
   return await signInWithEmailAndPassword(auth, email, password);
