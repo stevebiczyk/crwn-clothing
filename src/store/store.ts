@@ -1,5 +1,5 @@
-import { compose, createStore, applyMiddleware } from "redux";
-import { persistStore, persistReducer } from "redux-persist";
+import { compose, createStore, applyMiddleware, Middleware } from "redux";
+import { persistStore, persistReducer, PersistConfig } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import logger from "redux-logger";
 import createSagaMiddleware from "redux-saga";
@@ -9,7 +9,19 @@ import { rootSaga } from "./root-saga";
 
 import { rootReducer } from "./root-reducer";
 
-const persistConfig = {
+export type RootState = ReturnType<typeof rootReducer>;
+
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+
+type ExtendedPersistConfig = PersistConfig<RootState> & {
+  whitelist: (keyof RootState)[];
+};
+
+const persistConfig: ExtendedPersistConfig = {
   key: "root",
   storage,
   whitelist: ["cart"],
@@ -23,7 +35,7 @@ const middleWares = [
   import.meta.env.NODE_ENV !== "production" && logger,
   sagaMiddleware,
   // thunk,
-].filter(Boolean); // filter out falsey values
+].filter((middleware): middleware is Middleware => Boolean(middleware)); // filter out falsey values
 // console.log("Current Environment:", import.meta.env.NODE_ENV);
 
 const thunkMiddleware = (store) => (next) => (action) => {
