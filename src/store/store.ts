@@ -4,8 +4,6 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import logger from "redux-logger";
 import createSagaMiddleware from "redux-saga";
 import { rootSaga } from "./root-saga";
-// import { thunk } from "redux-thunk";
-// import thunk from "redux-thunk";
 
 import { rootReducer } from "./root-reducer";
 
@@ -34,17 +32,16 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const middleWares = [
   import.meta.env.NODE_ENV !== "production" && logger,
   sagaMiddleware,
-  // thunk,
 ].filter((middleware): middleware is Middleware => Boolean(middleware)); // filter out falsey values
 // console.log("Current Environment:", import.meta.env.NODE_ENV);
 
-const thunkMiddleware = (store) => (next) => (action) => {
-  if (typeof action === "function") {
-    action(dispatch);
-  }
+// const thunkMiddleware = (store) => (next) => (action) => {
+//   if (typeof action === "function") {
+//     action(dispatch);
+//   }
 
-  return next(action);
-};
+//   return next(action);
+// };
 
 const composeEnhancer =
   (import.meta.env.NODE_ENV !== "production" &&
