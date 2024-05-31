@@ -1,4 +1,4 @@
-import { takeLatest, put, all, call } from "typed-redux-saga/macro";
+import { takeLatest, put, all, call } from "typed-redux-saga";
 import { User } from "firebase/auth";
 import { USER_ACTION_TYPES } from "./user.types";
 import {
@@ -9,6 +9,8 @@ import {
   signOutSuccess,
   signOutFailure,
   EmailSignInStart,
+  SignUpStart,
+  SignUpSuccess,
 } from "./user.action";
 import {
   getCurrentUser,
@@ -62,9 +64,8 @@ export function* signInWithEmail({
 
     if (userCredential) {
       const { user } = userCredential;
+      yield* call(getSnapshotFromUserAuth, user);
     }
-
-    yield* call(getSnapshotFromUserAuth, user);
   } catch (error) {
     yield* put(signInFailure(error as Error));
   }
@@ -72,16 +73,20 @@ export function* signInWithEmail({
 
 export function* signUpWithEmail({
   payload: { email, password, displayName },
-}) {
+}: SignUpStart) {
   try {
-    const { user } = yield* call(
+    const userCredential = yield* call(
       createAuthUserWithEmailAndPassword,
       email,
       password
     );
-    yield* put(signUpSuccess(user, { displayName }));
+
+    if (userCredential) {
+      const { user } = userCredential;
+      yield* put(signUpSuccess(user, { displayName }));
+    }
   } catch (error) {
-    yield* put(signUpFailure(error));
+    yield* put(signUpFailure(error as Error));
   }
 }
 
@@ -90,7 +95,7 @@ export function* signOut() {
     yield* call(signOutCurrentUser);
     yield* put(signOutSuccess());
   } catch (error) {
-    yield* put(signOutFailure(error));
+    yield* put(signOutFailure(error as Error));
   }
 }
 
@@ -99,15 +104,14 @@ export function* isUserAuthenticated() {
     const userAuth = yield* call(getCurrentUser);
     if (!userAuth) return;
     yield* call(getSnapshotFromUserAuth, userAuth);
-    // yield put(signInSuccess(userAuth));
   } catch (error) {
-    yield* put(signInFailure(error));
+    yield* put(signInFailure(error as Error));
   }
 }
 
 export function* signInAfterSignUp({
   payload: { user, additionalInformation },
-}) {
+}: SignUpSuccess) {
   yield* call(getSnapshotFromUserAuth, user, additionalInformation);
 }
 
