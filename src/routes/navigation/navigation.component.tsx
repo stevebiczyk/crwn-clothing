@@ -16,6 +16,10 @@ import {
   LogoContainer,
 } from "./navigation.styles";
 
+// type CrownLogoProps = {
+//   className?: string;
+// };
+
 const Navigation = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
